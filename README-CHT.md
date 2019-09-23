@@ -9,7 +9,6 @@
 用您喜歡的文本編輯器打開“ /etc/nginx/nginx.conf”文件，然後將以下幾行添加到http {....}塊中的nginx.conf中。
 ```bash
 include /etc/nginx/cloudflare;
-real_ip_header CF-Connecting-IP;
 ```
 bash腳本可以手動運行，也可以安排自動刷新CloudFlare的IP列表
 ```bash
@@ -27,6 +26,9 @@ echo "# - IPv6" >> /etc/nginx/cloudflare;
 for i in `curl https://www.cloudflare.com/ips-v6`; do
         echo "set_real_ip_from $i;" >> /etc/nginx/cloudflare;
 done
+
+echo "" >> /etc/nginx/cloudflare;
+echo "real_ip_header CF-Connecting-IP;" >> /etc/nginx/cloudflare;
 
 #test configuration and reload nginx
 nginx -t && systemctl reload nginx
